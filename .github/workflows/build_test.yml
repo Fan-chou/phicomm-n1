@@ -72,6 +72,12 @@ jobs:
       run: |
         cd n1
         echo -e "$(nproc) thread compile"
+        DOWNLOAD_MIRROR=`cat config/boards/arm-64.conf| grep DOWNLOAD_MIRROR`
+        MAINLINE_MIRROR=`cat config/boards/arm-64.conf| grep MAINLINE_MIRROR`
+        NAMESERVER=`cat config/boards/arm-64.conf| grep NAMESERVER`
+        sed -i "s/$DOWNLOAD_MIRROR/DOWNLOAD_MIRROR=\"\"/g" config/boards/arm-64.conf
+        sed -i "s/$MAINLINE_MIRROR/MAINLINE_MIRROR=\"\"/g" config/boards/arm-64.conf
+        sed -i "s/$NAMESERVER/NAMESERVER=\"1.1.1.1\"/g" config/boards/arm-64.conf
         ./compile.sh BOARD=arm-64 ARCH=arm64 BRANCH=current RELEASE=buster KERNEL_ONLY=no KERNEL_CONFIGURE=no BUILD_MINIMAL=no BUILD_DESKTOP=no PROGRESS_LOG_TO_FILE=yes
         echo "::set-output name=status::success"
         # echo "`find ./`"
